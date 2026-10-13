@@ -5,7 +5,7 @@ function Skills() {
         <section className="skills">
             <div className="section-title">
                 <div>
-                    <p>LEARNING PROGRESS</p>
+                    <p>TECH STACK</p>
                     <h2>My Skills</h2>
                 </div>
             </div>

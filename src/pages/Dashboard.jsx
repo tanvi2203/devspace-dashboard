@@ -1,11 +1,9 @@
 import { Link } from "react-router-dom";
 import TaskItem from "../components/TaskItem";
-import ProjectCard from "../components/ProjectCard";
 
-function Dashboard({ tasks, projects, toggleTask }) {
+function Dashboard({ tasks, toggleTask }) {
     const completed = tasks.filter((task) => task.done).length;
     const pending = tasks.filter((task) => !task.done);
-    const activeProjects = projects.filter((project) => project.progress < 100).length;
 
     // only show the first 3 pending tasks here
     const todaysTasks = pending.slice(0, 3);
@@ -24,8 +22,8 @@ function Dashboard({ tasks, projects, toggleTask }) {
                 </div>
 
                 <div className="stat-card">
-                    <p>Active Projects</p>
-                    <h2>{activeProjects}</h2>
+                    <p>Total Tasks</p>
+                    <h2>{tasks.length}</h2>
                 </div>
             </section>
 
@@ -48,21 +46,6 @@ function Dashboard({ tasks, projects, toggleTask }) {
                         <TaskItem key={task.id} task={task} onToggle={toggleTask} />
                     ))
                 )}
-            </section>
-
-            <section className="projects">
-                <div className="section-title">
-                    <div>
-                        <p>MY WORK</p>
-                        <h2>Current Projects</h2>
-                    </div>
-                </div>
-
-                <div className="project-container">
-                    {projects.map((project) => (
-                        <ProjectCard key={project.id} project={project} />
-                    ))}
-                </div>
             </section>
         </>
     );

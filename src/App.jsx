@@ -4,27 +4,21 @@ import Sidebar from "./components/Sidebar";
 import Header from "./components/Header";
 import Dashboard from "./pages/Dashboard";
 import Tasks from "./pages/Tasks";
-import Projects from "./pages/Projects";
 import Skills from "./pages/Skills";
 import GitHub from "./pages/GitHub";
 import Notes from "./pages/Notes";
 import NotFound from "./pages/NotFound";
 import { defaultTasks } from "./data/tasks";
-import { defaultProjects } from "./data/projects";
 import { loadFromStorage, saveToStorage } from "./storage";
 
 const pageText = {
     "/": {
         title: "Your Developer Workspace",
-        text: "Keep track of your projects, tasks and learning progress.",
+        text: "Keep track of your tasks, notes and latest GitHub repositories.",
     },
     "/tasks": {
         title: "My Tasks",
         text: "Add what you need to do and tick it off when it is done.",
-    },
-    "/projects": {
-        title: "Projects",
-        text: "Move the slider to update how far each project has come.",
     },
     "/skills": {
         title: "My Skills",
@@ -42,7 +36,6 @@ const pageText = {
 
 function App() {
     const [tasks, setTasks] = useState(() => loadFromStorage("devspace-tasks", defaultTasks));
-    const [projects, setProjects] = useState(() => loadFromStorage("devspace-projects", defaultProjects));
     const [menuOpen, setMenuOpen] = useState(false);
 
     const location = useLocation();
@@ -52,10 +45,6 @@ function App() {
     useEffect(() => {
         saveToStorage("devspace-tasks", tasks);
     }, [tasks]);
-
-    useEffect(() => {
-        saveToStorage("devspace-projects", projects);
-    }, [projects]);
 
     useEffect(() => {
         document.title = "DevSpace | " + page.title;
@@ -86,16 +75,6 @@ function App() {
         setTasks(tasks.filter((task) => task.id !== id));
     }
 
-    function changeProgress(id, value) {
-        const updated = projects.map((project) => {
-            if (project.id === id) {
-                return { ...project, progress: Number(value) };
-            }
-            return project;
-        });
-        setProjects(updated);
-    }
-
     return (
         <>
             <Sidebar open={menuOpen} closeMenu={() => setMenuOpen(false)} />
@@ -110,7 +89,7 @@ function App() {
                 <Routes>
                     <Route
                         path="/"
-                        element={<Dashboard tasks={tasks} projects={projects} toggleTask={toggleTask} />}
+                        element={<Dashboard tasks={tasks} toggleTask={toggleTask} />}
                     />
                     <Route
                         path="/tasks"
@@ -122,10 +101,6 @@ function App() {
                                 deleteTask={deleteTask}
                             />
                         }
-                    />
-                    <Route
-                        path="/projects"
-                        element={<Projects projects={projects} changeProgress={changeProgress} />}
                     />
                     <Route path="/skills" element={<Skills />} />
                     <Route path="/github" element={<GitHub />} />
