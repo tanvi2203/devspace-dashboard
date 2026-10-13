@@ -46,6 +46,12 @@ function Dashboard({ tasks, toggleTask }) {
                         <TaskItem key={task.id} task={task} onToggle={toggleTask} />
                     ))
                 )}
+
+                {pending.length > 3 && (
+                    <p className="empty-text">
+                        Showing 3 of {pending.length} pending tasks. <Link to="/tasks">View all tasks</Link>
+                    </p>
+                )}
             </section>
         </>
     );
